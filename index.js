@@ -4,7 +4,7 @@ import "dotenv/config";
 import express from 'express';
 import cors from "cors";
 import indexRoutes from './routes/index.routes.js';
-import itemsRoutes from './routes/items.routes.js';
+// import itemsRoutes from './routes/items.routes.js';
 import loginRoutes from './routes/login.routes.js';
 import morgan from "morgan";
 import crypto from "crypto";
