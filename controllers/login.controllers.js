@@ -1,4 +1,4 @@
-import {sqlConnect, sql} from "../utils/sql.js";
+// import {sqlConnect, sql} from "../utils/sql.js";
 
 export const login = async(req, res) => {
   const user = await db.collection("users").doc(req.body.username).get();
