@@ -17,7 +17,7 @@ app.use(express.json());
 
 //Rutas
 app.use(indexRoutes);
-app.use(itemsRoutes);
+// app.use(itemsRoutes);
 // app.use(itemsRoutes2);
 // app.use(itemsRoutes3);
 app.use(loginRoutes);
