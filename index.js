@@ -16,6 +16,14 @@ import usersRoutes from './routes/users.routes.js';
 
 const app = express();
 
+// Add at the top of your file
+console.log("Starting application...");
+console.log("Environment variables present:", {
+  projectId: !!process.env.PROJECT_ID,
+  privateKey: !!process.env.PRIVATE_KEY,
+  clientEmail: !!process.env.CLIENT_EMAIL
+});
+
 app.use(cors());
 app.use(morgan("dev"));
 app.use(express.json());
@@ -46,6 +54,8 @@ app.get('/firebase-test', async (req, res) => {
     });
   }
 });
+
+console.log("About to start server on port:", PORT);
 
 // //hashing test
 // let msg = "Hello, world!";

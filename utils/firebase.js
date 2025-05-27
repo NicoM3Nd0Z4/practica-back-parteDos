@@ -4,22 +4,22 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
-const app = firebase.initializeApp({
-  credential: firebase.credential.cert({
-    projectId: process.env.PROJECT_ID,
-    privateKey: process.env.PRIVATE_KEY.replace(/\\n/g, '\n'), // Replace escaped newlines
-    clientEmail: process.env.CLIENT_EMAIL,
-    apiKey: process.env.API_KEY,
-    authDomain: process.env.AUTH_DOMAIN,
-    storageBucket: process.env.STORAGE_BUCKET,
-    messagingSenderId: process.env.MESSAGING_SENDER_ID,
-    appId: process.env.APP_ID,
-    measurementId: process.env.MEASUREMENT_ID,
-  }),
-});
+// Simplified initialization
+let app;
+try {
+  app = firebase.initializeApp({
+    credential: firebase.credential.cert({
+      projectId: process.env.PROJECT_ID,
+      privateKey: process.env.PRIVATE_KEY?.replace(/\\n/g, '\n'),
+      clientEmail: process.env.CLIENT_EMAIL
+    })
+  });
+  console.log("Firebase initialized successfully");
+} catch (error) {
+  console.error("Firebase initialization error:", error);
+  // Continue even if Firebase fails, so we can at least see error logs
+}
 
-
-// Initialize Firebase
-const db = getFirestore(app);
+const db = app ? getFirestore(app) : null;
 
 export default db;
