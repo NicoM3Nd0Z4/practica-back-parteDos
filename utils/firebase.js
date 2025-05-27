@@ -6,7 +6,7 @@ dotenv.config();
 
 const app = firebase.initializeApp({
   credential: firebase.credential.cert({
-    project_id: process.env.PROJECT_ID,
+    projectId: process.env.PROJECT_ID,
     privateKey: process.env.PRIVATE_KEY.replace(/\\n/g, '\n'), // Replace escaped newlines
     clientEmail: process.env.CLIENT_EMAIL,
     apiKey: process.env.API_KEY,
