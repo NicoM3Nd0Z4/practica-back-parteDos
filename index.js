@@ -25,6 +25,26 @@ app.use(itemsRoutes);
 app.use(loginRoutes);
 app.use(signInRoutes); 
 app.use(usersRoutes);
+// Add this to your routes
+app.get('/test', (req, res) => {
+  res.status(200).json({ message: 'API is working' });
+});
+app.get('/firebase-test', async (req, res) => {
+  try {
+    // Simple Firebase query
+    const snapshot = await db.collection('test').get();
+    return res.status(200).json({ 
+      message: 'Firebase connection successful',
+      collections: snapshot.size 
+    });
+  } catch (error) {
+    console.error('Firebase error:', error);
+    return res.status(500).json({ 
+      message: 'Firebase connection failed', 
+      error: error.message 
+    });
+  }
+});
 
 //hashing test
 let msg = "Hello, world!";
