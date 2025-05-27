@@ -1,13 +1,17 @@
 
-// const express = require('express');
 import "dotenv/config";
 import express from 'express';
 import cors from "cors";
-import indexRoutes from './routes/index.routes.js';
-// import itemsRoutes from './routes/items.routes.js';
-import loginRoutes from './routes/login.routes.js';
 import morgan from "morgan";
 import crypto from "crypto";
+
+// Routes
+import indexRoutes from './routes/index.routes.js';
+import itemsRoutes from './routes/items.routes.js';
+import loginRoutes from './routes/login.routes.js';
+import signInRoutes from './routes/signIn.routes.js';
+import usersRoutes from './routes/users.routes.js';
+
 
 const app = express();
 
@@ -17,10 +21,10 @@ app.use(express.json());
 
 //Rutas
 app.use(indexRoutes);
-// app.use(itemsRoutes);
-// app.use(itemsRoutes2);
-// app.use(itemsRoutes3);
+app.use(itemsRoutes);
 app.use(loginRoutes);
+app.use(signInRoutes); 
+app.use(usersRoutes);
 
 //hashing test
 let msg = "Hello, world!";
@@ -72,6 +76,6 @@ let dec = decipher.update(crypted, "hex", "utf8");
 dec += decipher.final("utf8");
 console.log(dec);
 
-app.listen(5000, console.log("http://localhost:5000"));
+app.listen(5000, () => console.log("Server running at http://localhost:5000"));
 
 console.log('Hello, world!');

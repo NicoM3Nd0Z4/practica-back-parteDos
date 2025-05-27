@@ -1,3 +1,5 @@
+import db from "../utils/firebase.js";
+import jwt from "jsonwebtoken";
 import crypto from "crypto";
 
 function verifyPassword(password, storedHash) {
@@ -8,25 +10,58 @@ function verifyPassword(password, storedHash) {
 
 export const signIn = async (req, res) => {
   try {
-      const { username, password } = req.body;
+    const { username, password } = req.body;
 
-      // Buscar usuario en la base de datos
-      const user = await User?.findOne({ username });
+    if (!username || !password) {
+      return res.status(400).json({ 
+        isLogin: false, 
+        message: "Username and password are required" 
+      });
+    }
 
-      if (!user) {
-          return res.status(400).json({ isLogin: false, message: "Usuario no encontrado" });
-      }
+    // Get user from Firebase
+    const usersRef = db.collection("users");
+    const snapshot = await usersRef.where("username", "==", username).limit(1).get();
+    
+    if (snapshot.empty) {
+      return res.status(401).json({ 
+        isLogin: false, 
+        message: "Invalid credentials" 
+      });
+    }
 
-      // Verificar la contraseña
-      const isLogin = verifyPassword(password, user.password);
+    // Get user data
+    const userDoc = snapshot.docs[0];
+    const userData = userDoc.data();
 
-      if (isLogin) {
-          res.status(200).json({ isLogin: true, user });
-      } else {
-          res.status(400).json({ isLogin: false, message: "Contraseña incorrecta" });
-      }
+    // Verify password
+    const isLogin = verifyPassword(password, userData.password);
+
+    if (isLogin) {
+      // Generate JWT token
+      const token = jwt.sign(
+        { sub: userDoc.id, username: userData.username }, 
+        process.env.JWT, 
+        { expiresIn: "1h" }
+      );
+      
+      return res.status(200).json({ 
+        isLogin: true, 
+        user: {
+          id: userDoc.id,
+          username: userData.username,
+          // Add other user fields as needed, but exclude password
+        },
+        token: token
+      });
+    } else {
+      return res.status(401).json({ 
+        isLogin: false, 
+        message: "Invalid credentials" 
+      });
+    }
   } catch (error) {
-      console.error("Error en el login:", error);
-      res.status(500).json({ isLogin: false, message: "Error en el servidor" });
+    console.error("Error en el login:", error);
+    res.status(500).json({ isLogin: false, message: "Error en el servidor" });
   }
 };
