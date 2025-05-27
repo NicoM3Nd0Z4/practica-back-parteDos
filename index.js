@@ -3,6 +3,7 @@ import "dotenv/config";
 import express from 'express';
 import cors from "cors";
 import morgan from "morgan";
+import db from './utils/firebase.js';
 import crypto from "crypto";
 
 // Routes
