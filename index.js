@@ -55,8 +55,6 @@ app.get('/firebase-test', async (req, res) => {
   }
 });
 
-console.log("About to start server on port:", PORT);
-
 // //hashing test
 // let msg = "Hello, world!";
 // const hashing = crypto.createHash("sha512");
@@ -109,5 +107,7 @@ console.log("About to start server on port:", PORT);
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, '0.0.0.0', () => console.log(`Server running on port ${PORT}`));
+
+console.log("About to start server on port:", PORT);
 
 console.log('Hello, world!');
